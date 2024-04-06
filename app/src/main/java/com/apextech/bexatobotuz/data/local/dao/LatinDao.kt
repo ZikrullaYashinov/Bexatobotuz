@@ -17,4 +17,7 @@ interface LatinDao {
     @Query("SELECT * FROM latins")
     fun getLatins(): Flow<List<LatinEntity>>
 
+    @Query("DELETE FROM latins")
+    suspend fun deleteLatins()
+
 }

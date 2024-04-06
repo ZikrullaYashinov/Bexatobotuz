@@ -6,6 +6,12 @@
     app:startDestination="@id/translateFragment">
 
     <fragment
+        android:id="@+id/favouriteFragment"
+        android:name="com.apextech.bexatobotuz.ui.screen.history.HistoryFragment"
+        android:label="fragment_favourite"
+        tools:layout="@layout/fragment_history" />
+
+    <fragment
         android:id="@+id/translateFragment"
         android:name="com.apextech.bexatobotuz.ui.screen.translate.TranslateFragment"
         android:label="fragment_translate"

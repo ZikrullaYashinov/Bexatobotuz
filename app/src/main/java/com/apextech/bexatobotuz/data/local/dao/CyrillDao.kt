@@ -17,5 +17,7 @@ interface CyrillDao {
 
     @Query("SELECT * FROM cyrills")
     fun getCyrills(): Flow<List<CyrillEntity>>
+    @Query("DELETE FROM cyrills")
+    suspend fun deleteCyrills()
 
 }

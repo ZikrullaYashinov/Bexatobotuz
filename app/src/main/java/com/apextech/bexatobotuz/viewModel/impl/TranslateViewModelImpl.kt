@@ -3,7 +3,7 @@ package com.apextech.bexatobotuz.viewModel.impl
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.apextech.bexatobotuz.data.local.entity.FavouriteEntity
+import com.apextech.bexatobotuz.data.local.entity.HistoryEntity
 import com.apextech.bexatobotuz.data.remote.response.Resource
 import com.apextech.bexatobotuz.data.remote.response.WordResponse
 import com.apextech.bexatobotuz.useCase.TranslateUseCase
@@ -16,6 +16,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import java.util.Timer
+import java.util.TimerTask
 import javax.inject.Inject
 
 @HiltViewModel
@@ -23,6 +25,7 @@ class TranslateViewModelImpl @Inject constructor(
     private val useCase: TranslateUseCase,
     private val networkHelper: NetworkHelper
 ) : ViewModel(), TranslateViewModel {
+
     private var _stateStatus =
         MutableStateFlow<TranslateResource<List<WordResponse>>>(TranslateResource.Loading)
     val stateStatus = _stateStatus.asStateFlow()
@@ -39,12 +42,23 @@ class TranslateViewModelImpl @Inject constructor(
     private var _cyrillWords = listOf<WordResponse>()
     private var _latinWords = listOf<WordResponse>()
 
+    private var _inputText = ""
+    private var changed = false
+    private var timer = Timer()
+
+    init {
+        viewModelScope.launch {
+            fetchLatins()
+            fetchCyrills()
+        }
+    }
+
     override suspend fun fetchCyrills() {
         if (networkHelper.isNetworkConnected()) {
             useCase.getCyrills().onEach {
                 when (it) {
                     is Resource.Error -> {
-                        _stateStatus.emit(TranslateResource.Error(it.e.message))
+                        _stateStatus.emit(TranslateResource.Error(it.message))
                     }
 
                     Resource.Loading -> {
@@ -57,23 +71,22 @@ class TranslateViewModelImpl @Inject constructor(
                 }
             }.launchIn(viewModelScope)
         }
+
         useCase.getCyrillsByDatabase().onEach {
             if (it.isNotEmpty()) {
                 _stateStatus.emit(TranslateResource.Success(it))
                 _cyrillWords = it
-                Log.d(TAG, "getCyrillsByDatabase: ${it.size}")
             } else
                 _stateStatus.emit(TranslateResource.NotInternet)
         }.launchIn(viewModelScope)
     }
 
     override suspend fun fetchLatins() {
-        _stateStatus.emit(TranslateResource.Loading)
         if (networkHelper.isNetworkConnected()) {
             useCase.getLatins().onEach {
                 when (it) {
                     is Resource.Error -> {
-                        _stateStatus.emit(TranslateResource.Error(it.e.message))
+                        _stateStatus.emit(TranslateResource.Error(it.message))
                     }
 
                     Resource.Loading -> {
@@ -86,17 +99,18 @@ class TranslateViewModelImpl @Inject constructor(
                 }
             }.launchIn(viewModelScope)
         }
+
         useCase.getLatinsByDatabase().onEach {
             if (it.isNotEmpty()) {
                 _stateStatus.emit(TranslateResource.Success(it))
                 _latinWords = it
-                Log.d(TAG, "getLatinsByDatabase: ${it.size}")
             } else
                 _stateStatus.emit(TranslateResource.NotInternet)
         }.launchIn(viewModelScope)
     }
 
     override fun translate(text: String) {
+        Log.d(TAG, "translate: $text")
         var translateText = text
         for (word in if (!_stateReplaceTranslator.value) _cyrillWords else _latinWords) {
             translateText = if (_stateReplaceTranslator.value)
@@ -105,6 +119,19 @@ class TranslateViewModelImpl @Inject constructor(
                 translateText.replace(word.letterCyrill, word.letterLatin)
         }
         _stateResult.value = translateText
+        changed = _inputText != text
+        _inputText = text
+        timer.cancel()
+        timer = Timer()
+        timer.schedule(
+            object : TimerTask() {
+                override fun run() {
+                    if (text.isNotEmpty())
+                        addFavourite()
+                }
+            },
+            1000
+        )
     }
 
     override fun replaceTranslator() {
@@ -117,16 +144,18 @@ class TranslateViewModelImpl @Inject constructor(
 
     override fun addFavourite() {
         viewModelScope.launch {
-            val favourite =
-                if (_stateReplaceTranslator.value)
-                    FavouriteEntity(cyrill = _stateResult.value, latin = _stateInput.value)
-                else
-                    FavouriteEntity(cyrill = _stateInput.value, latin = _stateResult.value)
-            useCase.insertFavouriteByDatabase(favourite)
+            if (changed) {
+                val favourite =
+                    if (_stateReplaceTranslator.value)
+                        HistoryEntity(cyrill = _stateResult.value, latin = _inputText)
+                    else
+                        HistoryEntity(cyrill = _inputText, latin = _stateResult.value)
+                useCase.insertFavouriteByDatabase(favourite)
+            }
         }
     }
 
-    override fun deleteFavourite(favouriteEntity: FavouriteEntity) {
+    override fun deleteFavourite(favouriteEntity: HistoryEntity) {
         viewModelScope.launch {
             useCase.deleteFavouriteByDatabase(favouriteEntity)
         }

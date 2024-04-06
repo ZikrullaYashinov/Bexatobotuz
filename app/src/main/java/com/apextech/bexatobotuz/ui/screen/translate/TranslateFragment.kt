@@ -1,20 +1,16 @@
 package com.apextech.bexatobotuz.ui.screen.translate
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.apextech.bexatobotuz.data.local.entity.FavouriteEntity
 import com.apextech.bexatobotuz.databinding.FragmentTranslateBinding
 import com.apextech.bexatobotuz.utils.Assistant
-import com.apextech.bexatobotuz.utils.Constants.TAG
-import com.apextech.bexatobotuz.viewModel.impl.FavouriteResource
 import com.apextech.bexatobotuz.viewModel.impl.TranslateResource
 import com.apextech.bexatobotuz.viewModel.impl.TranslateViewModelImpl
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,8 +19,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import java.util.Timer
+import java.util.TimerTask
 import kotlin.coroutines.CoroutineContext
-import kotlin.math.log
+
 
 @AndroidEntryPoint
 class TranslateFragment : Fragment(), CoroutineScope {
@@ -48,10 +46,6 @@ class TranslateFragment : Fragment(), CoroutineScope {
     }
 
     private fun load() {
-        launch {
-            viewModel.fetchLatins()
-            viewModel.fetchCyrills()
-        }
     }
 
     private fun observe() {
@@ -76,8 +70,8 @@ class TranslateFragment : Fragment(), CoroutineScope {
                 }
 
                 TranslateResource.Loading -> {
-                    setInvisibleAll()
-                    binding.progress.isVisible = true
+//                    setInvisibleAll()
+//                    binding.progress.isVisible = true
                 }
 
                 TranslateResource.NotInternet -> {
@@ -88,9 +82,6 @@ class TranslateFragment : Fragment(), CoroutineScope {
                     setInvisibleAll()
                     binding.bodyView.isVisible = true
                 }
-
-                is FavouriteResource.Error -> TODO()
-                is FavouriteResource.Success -> TODO()
             }
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
@@ -108,9 +99,6 @@ class TranslateFragment : Fragment(), CoroutineScope {
                 var text = binding.etInputText.text.toString()
                 text += "\n\n${binding.tvOutputText.text}\n\nPowered by Bexato"
                 Assistant.shareItem(requireContext(), text)
-            }
-            imgFavourite.setOnClickListener {
-                viewModel.addFavourite()
             }
             imgClear.setOnClickListener {
                 etInputText.setText("")

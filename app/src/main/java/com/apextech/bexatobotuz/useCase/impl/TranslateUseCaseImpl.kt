@@ -1,21 +1,14 @@
 package com.apextech.bexatobotuz.useCase.impl
 
-import android.util.Log
-import com.apextech.bexatobotuz.data.local.entity.CyrillEntity
-import com.apextech.bexatobotuz.data.local.entity.FavouriteEntity
-import com.apextech.bexatobotuz.data.local.entity.LatinEntity
+import com.apextech.bexatobotuz.data.local.entity.HistoryEntity
 import com.apextech.bexatobotuz.data.remote.response.Resource
 import com.apextech.bexatobotuz.data.remote.response.WordResponse
 import com.apextech.bexatobotuz.repository.CyrillLatinRepository
 import com.apextech.bexatobotuz.useCase.TranslateUseCase
-import com.apextech.bexatobotuz.utils.Constants.TAG
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flatMapConcat
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class TranslateUseCaseImpl @Inject constructor(
@@ -52,16 +45,16 @@ class TranslateUseCaseImpl @Inject constructor(
         repository.insertAllLatinsByDatabase(list.map { it.toLatinEntity() })
     }
 
-    override fun getFavouritesByDatabase(): Flow<List<FavouriteEntity>> {
-        return repository.getFavouritesByDatabase()
+    override fun getFavouritesByDatabase(): Flow<List<HistoryEntity>> {
+        return repository.getHistoriesByDatabase()
     }
 
-    override suspend fun insertFavouriteByDatabase(favouriteEntity: FavouriteEntity) {
-        repository.insertFavouriteByDatabase(favouriteEntity)
+    override suspend fun insertFavouriteByDatabase(favouriteEntity: HistoryEntity) {
+        repository.insertHistoryByDatabase(favouriteEntity)
     }
 
-    override suspend fun deleteFavouriteByDatabase(favouriteEntity: FavouriteEntity) {
-        repository.deleteFavouriteByDatabase(favouriteEntity)
+    override suspend fun deleteFavouriteByDatabase(favouriteEntity: HistoryEntity) {
+        repository.deleteHistoryByDatabase(favouriteEntity)
     }
 
 }

@@ -1,8 +1,6 @@
 package com.apextech.bexatobotuz.useCase
 
-import com.apextech.bexatobotuz.data.local.entity.CyrillEntity
-import com.apextech.bexatobotuz.data.local.entity.FavouriteEntity
-import com.apextech.bexatobotuz.data.local.entity.LatinEntity
+import com.apextech.bexatobotuz.data.local.entity.HistoryEntity
 import com.apextech.bexatobotuz.data.remote.response.Resource
 import com.apextech.bexatobotuz.data.remote.response.WordResponse
 import kotlinx.coroutines.flow.Flow
@@ -18,7 +16,7 @@ interface TranslateUseCase {
     suspend fun insertAllCyrillsByDatabase(list: List<WordResponse>)
     suspend fun insertAllLatinsByDatabase(list: List<WordResponse>)
 
-    fun getFavouritesByDatabase(): Flow<List<FavouriteEntity>>
-    suspend fun insertFavouriteByDatabase(favouriteEntity: FavouriteEntity)
-    suspend fun deleteFavouriteByDatabase(favouriteEntity: FavouriteEntity)
+    fun getFavouritesByDatabase(): Flow<List<HistoryEntity>>
+    suspend fun insertFavouriteByDatabase(favouriteEntity: HistoryEntity)
+    suspend fun deleteFavouriteByDatabase(favouriteEntity: HistoryEntity)
 }

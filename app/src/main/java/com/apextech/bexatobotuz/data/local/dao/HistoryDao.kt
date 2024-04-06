@@ -5,20 +5,19 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.apextech.bexatobotuz.data.local.entity.FavouriteEntity
-import com.apextech.bexatobotuz.data.local.entity.LatinEntity
+import com.apextech.bexatobotuz.data.local.entity.HistoryEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface FavouriteDao {
+interface HistoryDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(favouriteEntity: FavouriteEntity)
+    suspend fun insert(favouriteEntity: HistoryEntity)
 
     @Delete
-    suspend fun delete(favouriteEntity: FavouriteEntity)
+    suspend fun delete(favouriteEntity: HistoryEntity)
 
     @Query("SELECT * FROM favourites")
-    fun getFavourite(): Flow<List<FavouriteEntity>>
+    fun getFavourite(): Flow<List<HistoryEntity>>
 
 }

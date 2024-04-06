@@ -3,7 +3,7 @@ package com.apextech.bexatobotuz.repository.impl
 import android.util.Log
 import com.apextech.bexatobotuz.data.local.database.AppDatabase
 import com.apextech.bexatobotuz.data.local.entity.CyrillEntity
-import com.apextech.bexatobotuz.data.local.entity.FavouriteEntity
+import com.apextech.bexatobotuz.data.local.entity.HistoryEntity
 import com.apextech.bexatobotuz.data.local.entity.LatinEntity
 import com.apextech.bexatobotuz.data.remote.api.ApiService
 import com.apextech.bexatobotuz.data.remote.response.Resource
@@ -25,9 +25,9 @@ class CyrillLatinRepositoryImpl @Inject constructor(
                 if (response.isSuccessful)
                     emit(Resource.Success(response.body()!!))
                 else
-                    emit(Resource.Error(Throwable(response.message())))
+                    emit(Resource.Error(response.message()))
             } catch (e: Exception) {
-                emit(Resource.Error(Throwable(e.message)))
+                emit(Resource.Error(e.message ?: ""))
                 Log.d(TAG, "getCyrills: ${e.message}")
             }
         }
@@ -39,7 +39,7 @@ class CyrillLatinRepositoryImpl @Inject constructor(
             if (response.isSuccessful)
                 emit(Resource.Success(response.body()!!))
             else
-                emit(Resource.Error(Throwable(response.message())))
+                emit(Resource.Error(response.message()))
         }
     }
 
@@ -52,23 +52,25 @@ class CyrillLatinRepositoryImpl @Inject constructor(
     }
 
     override suspend fun insertAllCyrillsByDatabase(list: List<CyrillEntity>) {
+        appDatabase.cyrillDao().deleteCyrills()
         appDatabase.cyrillDao().insertAll(list)
     }
 
     override suspend fun insertAllLatinsByDatabase(list: List<LatinEntity>) {
+        appDatabase.latinDao().deleteLatins()
         appDatabase.latinDao().insertAll(list)
     }
 
-    override fun getFavouritesByDatabase(): Flow<List<FavouriteEntity>> {
-        return appDatabase.favouriteDao().getFavourite()
+    override fun getHistoriesByDatabase(): Flow<List<HistoryEntity>> {
+        return appDatabase.historyDao().getFavourite()
     }
 
-    override suspend fun insertFavouriteByDatabase(favouriteEntity: FavouriteEntity) {
-        appDatabase.favouriteDao().insert(favouriteEntity)
+    override suspend fun insertHistoryByDatabase(favouriteEntity: HistoryEntity) {
+        appDatabase.historyDao().insert(favouriteEntity)
     }
 
-    override suspend fun deleteFavouriteByDatabase(favouriteEntity: FavouriteEntity) {
-        appDatabase.favouriteDao().delete(favouriteEntity)
+    override suspend fun deleteHistoryByDatabase(favouriteEntity: HistoryEntity) {
+        appDatabase.historyDao().delete(favouriteEntity)
     }
 
 

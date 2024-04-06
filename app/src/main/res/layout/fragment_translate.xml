@@ -21,7 +21,6 @@
                 android:layout_height="wrap_content"
                 android:background="@color/colorSecondary"
                 android:gravity="center"
-                android:orientation="vertical"
                 android:padding="8dp">
 
                 <LinearLayout
@@ -108,14 +107,15 @@
                 android:textColor="@color/colorSecondaryDark"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:visibility="visible" />
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/img_refresh"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:foreground="?attr/selectableItemBackground"
                 android:layout_margin="16dp"
+                android:visibility="gone"
+                android:foreground="?attr/selectableItemBackground"
                 android:src="@drawable/ic_refresh" />
 
             <ProgressBar
@@ -249,13 +249,6 @@
                             android:padding="8dp"
                             android:src="@drawable/ic_share_fill" />
 
-                        <ImageView
-                            android:id="@+id/img_favourite"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp"
-                            android:foreground="?attr/selectableItemBackground"
-                            android:padding="8dp"
-                            android:src="@drawable/ic_star_border" />
                     </LinearLayout>
 
                 </LinearLayout>
