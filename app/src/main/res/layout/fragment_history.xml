@@ -28,11 +28,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_medium"
-                    android:paddingEnd="8dp"
                     android:text="Be"
                     android:textColor="@color/colorSecondaryDark"
                     android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    tools:ignore="RtlSymmetry" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -52,8 +52,7 @@
             android:layout_height="match_parent"
             android:paddingBottom="8dp"
             android:paddingHorizontal="8dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:stackFromEnd="true" />
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
     </LinearLayout>
 
 </FrameLayout>

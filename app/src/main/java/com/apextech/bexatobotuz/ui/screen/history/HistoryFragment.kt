@@ -46,7 +46,7 @@ class HistoryFragment : Fragment() {
 
     private fun observe() {
         viewModel.stateStatus.onEach {
-            adapter.submitList(it)
+            adapter.submitList(it.reversed())
             binding.recyclerView.scrollToPosition(0)
         }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
