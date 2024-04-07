@@ -120,8 +120,9 @@ class TranslateViewModelImpl @Inject constructor(
         }
         _stateResult.value = translateText
         changed = _inputText != text
-        _inputText = text
         timer.cancel()
+        if (!changed) return
+        _inputText = text
         timer = Timer()
         timer.schedule(
             object : TimerTask() {
@@ -132,6 +133,17 @@ class TranslateViewModelImpl @Inject constructor(
             },
             1000
         )
+    }
+
+    override fun translateHistory(historyEntity: HistoryEntity) {
+        Log.d(TAG, "translateHistory: ")
+        viewModelScope.launch {
+            if (_stateReplaceTranslator.value) {
+                _stateInput.emit(historyEntity.latin)
+            } else {
+                _stateInput.emit(historyEntity.cyrill)
+            }
+        }
     }
 
     override fun replaceTranslator() {

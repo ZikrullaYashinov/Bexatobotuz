@@ -1,16 +1,21 @@
 package com.apextech.bexatobotuz.ui.screen.translate
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.apextech.bexatobotuz.data.local.entity.HistoryEntity
 import com.apextech.bexatobotuz.databinding.FragmentTranslateBinding
 import com.apextech.bexatobotuz.utils.Assistant
+import com.apextech.bexatobotuz.utils.Constants
+import com.apextech.bexatobotuz.utils.Constants.TAG
 import com.apextech.bexatobotuz.viewModel.impl.TranslateResource
 import com.apextech.bexatobotuz.viewModel.impl.TranslateViewModelImpl
 import dagger.hilt.android.AndroidEntryPoint
@@ -29,6 +34,17 @@ class TranslateFragment : Fragment(), CoroutineScope {
 
     private lateinit var binding: FragmentTranslateBinding
     private val viewModel by viewModels<TranslateViewModelImpl>()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setFragmentResultListener("data") { _, bundle ->
+            // We use a String here, but any type that can be put in a Bundle is supported.
+            val result = bundle.getSerializable(Constants.ARG_HISTORY) as HistoryEntity
+
+            viewModel.translateHistory(result)
+            // Do something with the result.
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -87,6 +103,7 @@ class TranslateFragment : Fragment(), CoroutineScope {
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
         viewModel.stateInput.onEach {
+            Log.d(TAG, "observe: $it")
             binding.etInputText.setText(it)
         }.launchIn(viewLifecycleOwner.lifecycleScope)
     }

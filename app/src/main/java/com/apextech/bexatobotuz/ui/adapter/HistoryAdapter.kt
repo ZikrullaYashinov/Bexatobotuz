@@ -2,6 +2,7 @@ package com.apextech.bexatobotuz.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
@@ -9,6 +10,8 @@ import com.apextech.bexatobotuz.data.local.entity.HistoryEntity
 import com.apextech.bexatobotuz.databinding.ItemHistoryBinding
 
 class HistoryAdapter : ListAdapter<HistoryEntity, HistoryAdapter.VhHistory>(MyDiffUtil()) {
+
+    lateinit var itemClick: (HistoryEntity) -> Unit
 
     inner class VhHistory(private val itemHistoryBinding: ItemHistoryBinding) :
         ViewHolder(itemHistoryBinding.root) {
@@ -42,6 +45,9 @@ class HistoryAdapter : ListAdapter<HistoryEntity, HistoryAdapter.VhHistory>(MyDi
 
     override fun onBindViewHolder(holder: VhHistory, position: Int) {
         val history = getItem(position)
+        holder.itemView.setOnClickListener {
+            itemClick.invoke(history)
+        }
         holder.bind(history)
     }
 

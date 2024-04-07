@@ -15,7 +15,7 @@
 
         <TextView
             android:id="@+id/tv_first"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_medium"
             android:paddingEnd="8dp"
@@ -27,13 +27,13 @@
 
         <TextView
             android:id="@+id/tv_second"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto_medium"
             android:paddingEnd="8dp"
             android:maxLines="2"
             android:text="Tarix"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/colorPrimary"
             android:textSize="14sp"
             android:textStyle="bold" />
     </LinearLayout>

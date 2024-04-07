@@ -6,6 +6,7 @@ interface TranslateViewModel {
     suspend fun fetchCyrills()
     suspend fun fetchLatins()
     fun translate(text: String)
+    fun translateHistory(historyEntity: HistoryEntity)
     fun replaceTranslator()
     fun addFavourite()
     fun deleteFavourite(favouriteEntity: HistoryEntity)

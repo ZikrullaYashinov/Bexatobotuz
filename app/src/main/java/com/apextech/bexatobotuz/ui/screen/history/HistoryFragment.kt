@@ -5,10 +5,15 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
+import com.apextech.bexatobotuz.R
 import com.apextech.bexatobotuz.databinding.FragmentHistoryBinding
 import com.apextech.bexatobotuz.ui.adapter.HistoryAdapter
+import com.apextech.bexatobotuz.utils.Constants
 import com.apextech.bexatobotuz.viewModel.impl.HistoryViewModelImpl
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.launchIn
@@ -52,7 +57,10 @@ class HistoryFragment : Fragment() {
     }
 
     private fun click() {
-
+        adapter.itemClick = {
+            setFragmentResult("data", bundleOf(Constants.ARG_HISTORY to it))
+            Navigation.findNavController(binding.root).popBackStack()
+        }
     }
 
     companion object {
