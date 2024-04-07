@@ -100,10 +100,12 @@ class TranslateFragment : Fragment(), CoroutineScope {
     private fun click() {
         binding.apply {
             imgCopy.setOnClickListener {
+                if (binding.tvOutputText.text.toString().trim().isEmpty()) return@setOnClickListener
                 Assistant.copyText(requireActivity(), binding.tvOutputText.text.toString())
             }
             imgShare.setOnClickListener {
-                var text = binding.etInputText.text.toString()
+                var text = binding.etInputText.text.toString().trim()
+                if (text.isEmpty()) return@setOnClickListener
                 text += "\n\n${binding.tvOutputText.text}\n\nPowered by Bexato"
                 Assistant.shareItem(requireContext(), text)
             }

@@ -11,6 +11,7 @@ import android.view.inputmethod.InputMethodManager
 object Assistant {
 
     fun copyText(activity: Activity, text: String) {
+        if (text.isEmpty()) return
         val manager =
             activity.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         manager.setPrimaryClip(ClipData.newPlainText("", text))
