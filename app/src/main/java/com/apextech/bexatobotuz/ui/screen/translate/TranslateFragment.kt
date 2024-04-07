@@ -38,11 +38,8 @@ class TranslateFragment : Fragment(), CoroutineScope {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setFragmentResultListener("data") { _, bundle ->
-            // We use a String here, but any type that can be put in a Bundle is supported.
             val result = bundle.getSerializable(Constants.ARG_HISTORY) as HistoryEntity
-
             viewModel.translateHistory(result)
-            // Do something with the result.
         }
     }
 
@@ -87,8 +84,8 @@ class TranslateFragment : Fragment(), CoroutineScope {
                 }
 
                 TranslateResource.Loading -> {
-//                    setInvisibleAll()
-//                    binding.progress.isVisible = true
+                    setInvisibleAll()
+                    binding.progress.isVisible = true
                 }
 
                 TranslateResource.NotInternet -> {
