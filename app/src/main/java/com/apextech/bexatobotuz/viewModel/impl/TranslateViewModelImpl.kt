@@ -13,6 +13,7 @@ import com.apextech.bexatobotuz.viewModel.TranslateViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -70,14 +71,14 @@ class TranslateViewModelImpl @Inject constructor(
                     }
                 }
             }.launchIn(viewModelScope)
-        }
+        } else
+            _stateStatus.emit(TranslateResource.Error(""))
 
         useCase.getCyrillsByDatabase().onEach {
             if (it.isNotEmpty()) {
                 _stateStatus.emit(TranslateResource.Success(it))
                 _cyrillWords = it
-            } else
-                _stateStatus.emit(TranslateResource.NotInternet)
+            }
         }.launchIn(viewModelScope)
     }
 
@@ -98,14 +99,14 @@ class TranslateViewModelImpl @Inject constructor(
                     }
                 }
             }.launchIn(viewModelScope)
-        }
+        } else
+            _stateStatus.emit(TranslateResource.Error(""))
 
         useCase.getLatinsByDatabase().onEach {
             if (it.isNotEmpty()) {
                 _stateStatus.emit(TranslateResource.Success(it))
                 _latinWords = it
-            } else
-                _stateStatus.emit(TranslateResource.NotInternet)
+            }
         }.launchIn(viewModelScope)
     }
 
@@ -190,7 +191,6 @@ class TranslateViewModelImpl @Inject constructor(
 
 sealed class TranslateResource<out T> {
     object Loading : TranslateResource<Nothing>()
-    object NotInternet : TranslateResource<Nothing>()
     class Success<T : Any>(val data: T) : TranslateResource<T>()
     class Error(val message: String?) : TranslateResource<Nothing>()
 }

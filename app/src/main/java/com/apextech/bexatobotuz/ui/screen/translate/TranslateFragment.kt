@@ -84,10 +84,6 @@ class TranslateFragment : Fragment(), CoroutineScope {
                     binding.progress.isVisible = true
                 }
 
-                TranslateResource.NotInternet -> {
-                    setError()
-                }
-
                 is TranslateResource.Success -> {
                     setInvisibleAll()
                     binding.bodyView.isVisible = true

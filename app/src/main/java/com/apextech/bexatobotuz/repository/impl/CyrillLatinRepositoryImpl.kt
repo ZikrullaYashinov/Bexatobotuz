@@ -20,16 +20,11 @@ class CyrillLatinRepositoryImpl @Inject constructor(
 ) : CyrillLatinRepository {
     override fun getCyrills(): Flow<Resource<List<WordResponse>>> {
         return flow {
-            try {
-                val response = apiService.getCyrills()
-                if (response.isSuccessful)
-                    emit(Resource.Success(response.body()!!))
-                else
-                    emit(Resource.Error(response.message()))
-            } catch (e: Exception) {
-                emit(Resource.Error(e.message ?: ""))
-                Log.d(TAG, "getCyrills: ${e.message}")
-            }
+            val response = apiService.getCyrills()
+            if (response.isSuccessful)
+                emit(Resource.Success(response.body()!!))
+            else
+                emit(Resource.Error(response.message()))
         }
     }
 
