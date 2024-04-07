@@ -7,4 +7,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface HistoryUseCase {
     fun getFavouritesByDatabase(): Flow<List<HistoryEntity>>
+    suspend fun deleteAll(list: List<HistoryEntity>)
 }

@@ -109,11 +109,12 @@ class TranslateViewModelImpl @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    override fun translate(text: String) {
-        Log.d(TAG, "translate: $text")
+    override fun translate(text: String, isLatin: Boolean?) {
+        val lng = isLatin ?: findTranslator(text)
+        _stateReplaceTranslator.value = lng
         var translateText = text
-        for (word in if (!_stateReplaceTranslator.value) _cyrillWords else _latinWords) {
-            translateText = if (_stateReplaceTranslator.value)
+        for (word in if (!lng) _cyrillWords else _latinWords) {
+            translateText = if (lng)
                 translateText.replace(word.letterLatin, word.letterCyrill)
             else
                 translateText.replace(word.letterCyrill, word.letterLatin)
@@ -131,7 +132,7 @@ class TranslateViewModelImpl @Inject constructor(
                         addFavourite()
                 }
             },
-            1000
+            2000
         )
     }
 
@@ -146,11 +147,23 @@ class TranslateViewModelImpl @Inject constructor(
         }
     }
 
+    private fun findTranslator(text: String): Boolean {
+        val size = text.length
+        var countChars = 0
+        val alphabetLower = "abcdefghijklmnopqrstuvwxyz"
+        val alphabetUpper = alphabetLower.uppercase()
+        text.map {
+            if (it in alphabetLower || it in alphabetUpper)
+                countChars++
+        }
+        return (size / 2) < countChars
+    }
+
     override fun replaceTranslator() {
         _stateReplaceTranslator.value = !_stateReplaceTranslator.value
         _stateResult.value.let {
             _stateInput.value = it
-            translate(it)
+            translate(it, _stateReplaceTranslator.value)
         }
     }
 

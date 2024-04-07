@@ -14,4 +14,10 @@ class HistoryUseCaseImpl @Inject constructor(
         return repository.getHistoriesByDatabase()
     }
 
+    override suspend fun deleteAll(list: List<HistoryEntity>) {
+        list.map {
+            repository.deleteHistoryByDatabase(it)
+        }
+    }
+
 }

@@ -33,7 +33,17 @@ class HistoryViewModelImpl @Inject constructor(
         useCase.getFavouritesByDatabase().onEach {
             Log.d(TAG, "fetchFavourites: ${it.size}")
             _stateStatus.emit(it)
+            deleteAll(it)
         }.launchIn(viewModelScope)
+    }
+
+    override fun deleteAll(list: List<HistoryEntity>) {
+        viewModelScope.launch {
+            Log.d(TAG, "deleteAll: ${list.size}")
+            if (list.size > 100) {
+                useCase.deleteAll(list.subList(0, list.size - 100))
+            }
+        }
     }
 
 

@@ -24,8 +24,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
-import java.util.Timer
-import java.util.TimerTask
 import kotlin.coroutines.CoroutineContext
 
 
@@ -68,9 +66,7 @@ class TranslateFragment : Fragment(), CoroutineScope {
 
             binding.etInputText.setHint(first)
             binding.firstTranslator.text = first
-            binding.firstTranslatorCard.text = first
             binding.secondTranslator.text = second
-            binding.secondTranslatorCard.text = second
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
         viewModel.stateResult.onEach {

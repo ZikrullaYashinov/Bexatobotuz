@@ -6,4 +6,6 @@ interface HistoryViewModel {
 
     fun fetchFavourites()
 
+    fun deleteAll(list: List<HistoryEntity>)
+
 }
