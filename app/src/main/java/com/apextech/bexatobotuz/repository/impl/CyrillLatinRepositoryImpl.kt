@@ -1,6 +1,5 @@
 package com.apextech.bexatobotuz.repository.impl
 
-import android.util.Log
 import com.apextech.bexatobotuz.data.local.database.AppDatabase
 import com.apextech.bexatobotuz.data.local.entity.CyrillEntity
 import com.apextech.bexatobotuz.data.local.entity.HistoryEntity
@@ -9,7 +8,6 @@ import com.apextech.bexatobotuz.data.remote.api.ApiService
 import com.apextech.bexatobotuz.data.remote.response.Resource
 import com.apextech.bexatobotuz.data.remote.response.WordResponse
 import com.apextech.bexatobotuz.repository.CyrillLatinRepository
-import com.apextech.bexatobotuz.utils.Constants.TAG
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
