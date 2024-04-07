@@ -53,6 +53,7 @@ class TranslateFragment : Fragment(), CoroutineScope {
             val first = if (it) "Lotin" else "Krill"
             val second = if (it) "Krill" else "Lotin"
 
+            binding.etInputText.setHint(first)
             binding.firstTranslator.text = first
             binding.firstTranslatorCard.text = first
             binding.secondTranslator.text = second
