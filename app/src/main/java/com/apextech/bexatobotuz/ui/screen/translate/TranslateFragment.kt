@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.apextech.bexatobotuz.R
 import com.apextech.bexatobotuz.data.local.entity.HistoryEntity
 import com.apextech.bexatobotuz.databinding.FragmentTranslateBinding
 import com.apextech.bexatobotuz.utils.Assistant
@@ -61,8 +62,8 @@ class TranslateFragment : Fragment(), CoroutineScope {
 
     private fun observe() {
         viewModel.stateReplaceTranslator.onEach {
-            val first = if (it) "Lotin" else "Krill"
-            val second = if (it) "Krill" else "Lotin"
+            val first = if (it) getString(R.string.lotin) else getString(R.string.krill)
+            val second = if (it) getString(R.string.krill) else getString(R.string.lotin)
 
             binding.etInputText.setHint(first)
             binding.firstTranslator.text = first
