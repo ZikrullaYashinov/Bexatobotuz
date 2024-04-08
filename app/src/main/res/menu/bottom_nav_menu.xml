@@ -4,12 +4,12 @@
 
     <item
         android:id="@+id/translateFragment"
-        android:title="Asosiy"
+        android:title="@string/main"
         android:icon="@drawable/ic_round_swap_horiz"/>
 
     <item
         android:id="@+id/favouriteFragment"
-        android:title="Tarix"
+        android:title="@string/history"
         android:icon="@drawable/ic_history"/>
 
 </menu>

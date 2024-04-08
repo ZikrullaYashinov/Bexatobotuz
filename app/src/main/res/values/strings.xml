@@ -8,4 +8,6 @@
     <string name="internet_aloqasini_tekshiring">Internet aloqasini tekshiring</string>
     <string name="lotin_text">Lotin text</string>
     <string name="output_text">Output text</string>
+    <string name="main">Asosiy</string>
+    <string name="history">Tarix</string>
 </resources>
