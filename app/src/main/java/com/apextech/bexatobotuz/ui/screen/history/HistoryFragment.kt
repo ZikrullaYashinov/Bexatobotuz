@@ -62,9 +62,4 @@ class HistoryFragment : Fragment() {
             Navigation.findNavController(binding.root).popBackStack()
         }
     }
-
-    companion object {
-        @JvmStatic
-        fun newInstance() = HistoryFragment()
-    }
 }

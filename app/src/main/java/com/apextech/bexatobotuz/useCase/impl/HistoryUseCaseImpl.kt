@@ -10,7 +10,7 @@ class HistoryUseCaseImpl @Inject constructor(
     private val repository: CyrillLatinRepository
 ) : HistoryUseCase {
 
-    override fun getFavouritesByDatabase(): Flow<List<HistoryEntity>> {
+    override fun getHistoriesByDatabase(): Flow<List<HistoryEntity>> {
         return repository.getHistoriesByDatabase()
     }
 
@@ -19,5 +19,4 @@ class HistoryUseCaseImpl @Inject constructor(
             repository.deleteHistoryByDatabase(it)
         }
     }
-
 }

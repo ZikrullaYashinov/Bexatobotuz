@@ -12,12 +12,12 @@ import kotlinx.coroutines.flow.Flow
 interface HistoryDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(favouriteEntity: HistoryEntity)
+    suspend fun insert(historyEntity: HistoryEntity)
 
     @Delete
-    suspend fun delete(favouriteEntity: HistoryEntity)
+    suspend fun delete(historyEntity: HistoryEntity)
 
-    @Query("SELECT * FROM favourites")
-    fun getFavourite(): Flow<List<HistoryEntity>>
+    @Query("SELECT * FROM history")
+    fun getHistory(): Flow<List<HistoryEntity>>
 
 }

@@ -1,13 +1,9 @@
 package com.apextech.bexatobotuz.viewModel.impl
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apextech.bexatobotuz.data.local.entity.HistoryEntity
-import com.apextech.bexatobotuz.data.remote.response.WordResponse
 import com.apextech.bexatobotuz.useCase.HistoryUseCase
-import com.apextech.bexatobotuz.useCase.TranslateUseCase
-import com.apextech.bexatobotuz.utils.Constants.TAG
 import com.apextech.bexatobotuz.viewModel.HistoryViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -26,12 +22,11 @@ class HistoryViewModelImpl @Inject constructor(
     val stateStatus = _stateStatus.asStateFlow()
 
     init {
-        fetchFavourites()
+        fetchHistories()
     }
 
-    override fun fetchFavourites() {
-        useCase.getFavouritesByDatabase().onEach {
-            Log.d(TAG, "fetchFavourites: ${it.size}")
+    override fun fetchHistories() {
+        useCase.getHistoriesByDatabase().onEach {
             _stateStatus.emit(it)
             deleteAll(it)
         }.launchIn(viewModelScope)
@@ -39,12 +34,7 @@ class HistoryViewModelImpl @Inject constructor(
 
     override fun deleteAll(list: List<HistoryEntity>) {
         viewModelScope.launch {
-            Log.d(TAG, "deleteAll: ${list.size}")
-            if (list.size > 100) {
-                useCase.deleteAll(list.subList(0, list.size - 100))
-            }
+            if (list.size > 100) useCase.deleteAll(list.subList(0, list.size - 100))
         }
     }
-
-
 }

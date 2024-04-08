@@ -19,6 +19,6 @@ interface CyrillLatinRepository {
     suspend fun insertAllLatinsByDatabase(list: List<LatinEntity>)
 
     fun getHistoriesByDatabase(): Flow<List<HistoryEntity>>
-    suspend fun insertHistoryByDatabase(favouriteEntity: HistoryEntity)
-    suspend fun deleteHistoryByDatabase(favouriteEntity: HistoryEntity)
+    suspend fun insertHistoryByDatabase(historyEntity: HistoryEntity)
+    suspend fun deleteHistoryByDatabase(historyEntity: HistoryEntity)
 }

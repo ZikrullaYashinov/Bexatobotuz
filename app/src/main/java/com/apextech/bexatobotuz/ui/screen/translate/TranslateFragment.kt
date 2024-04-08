@@ -92,7 +92,6 @@ class TranslateFragment : Fragment(), CoroutineScope {
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
         viewModel.stateInput.onEach {
-            Log.d(TAG, "observe: $it")
             binding.etInputText.setText(it)
         }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
@@ -140,11 +139,6 @@ class TranslateFragment : Fragment(), CoroutineScope {
             progress.isVisible = false
             imgRefresh.isVisible = false
         }
-    }
-
-    companion object {
-        @JvmStatic
-        fun newInstance() = TranslateFragment()
     }
 
     override val coroutineContext: CoroutineContext

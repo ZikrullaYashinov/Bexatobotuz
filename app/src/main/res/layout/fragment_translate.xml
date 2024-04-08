@@ -33,8 +33,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto_medium"
-                        android:paddingEnd="8dp"
-                        android:text="Be"
+                        android:text="@string/be"
                         android:textColor="@color/colorSecondaryDark"
                         android:textSize="20sp"
                         android:textStyle="bold"
@@ -44,7 +43,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto_medium"
-                        android:text="xato"
+                        android:text="@string/xato"
                         android:textColor="@color/colorPrimary"
                         android:textSize="20sp"
                         android:textStyle="bold" />
@@ -76,7 +75,6 @@
                     android:id="@+id/img_replace_translator"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
-                    android:contentDescription="TODO"
                     android:foreground="?attr/selectableItemBackground"
                     android:src="@drawable/ic_round_swap_horiz" />
 
@@ -88,7 +86,7 @@
                     android:fontFamily="@font/roboto_medium"
                     android:gravity="center"
                     android:paddingVertical="16dp"
-                    android:text="Krill"
+                    android:text="@string/krill"
                     android:textColor="@color/black"
                     android:textSize="18sp"
                     android:textStyle="bold" />
@@ -103,7 +101,7 @@
                 android:gravity="start"
                 android:paddingHorizontal="8dp"
                 android:paddingVertical="8dp"
-                android:text="Internet aloqasini tekshiring"
+                android:text="@string/internet_aloqasini_tekshiring"
                 android:textColor="@color/colorSecondaryDark"
                 android:textSize="18sp"
                 android:textStyle="bold"
@@ -148,7 +146,7 @@
                         android:layout_weight="1"
                         android:background="@drawable/background_text_view"
                         android:fontFamily="@font/roboto_medium"
-                        android:hint="Lotin text"
+                        android:hint="@string/lotin_text"
                         android:inputType="textMultiLine"
                         android:paddingHorizontal="8dp"
                         android:paddingVertical="8dp"
@@ -182,7 +180,7 @@
                         android:fontFamily="@font/roboto_medium"
                         android:paddingHorizontal="8dp"
                         android:paddingVertical="8dp"
-                        android:text="Output text"
+                        android:text="@string/output_text"
                         android:textColor="@color/black"
                         android:textColorHint="@color/gray2"
                         android:textSize="16sp" />

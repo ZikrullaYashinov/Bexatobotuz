@@ -9,6 +9,5 @@ interface TranslateViewModel {
     fun translateHistory(historyEntity: HistoryEntity)
     fun replaceTranslator()
     fun addFavourite()
-    fun deleteFavourite(favouriteEntity: HistoryEntity)
 
 }

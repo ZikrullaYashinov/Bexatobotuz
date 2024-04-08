@@ -13,7 +13,6 @@ import com.apextech.bexatobotuz.viewModel.TranslateViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -67,14 +66,14 @@ class TranslateViewModelImpl @Inject constructor(
                     }
 
                     is Resource.Success -> {
-                        useCase.insertAllCyrillsByDatabase(it.data)
+                        useCase.insertAllCyrillsToDatabase(it.data)
                     }
                 }
             }.launchIn(viewModelScope)
         } else
             _stateStatus.emit(TranslateResource.Error(""))
 
-        useCase.getCyrillsByDatabase().onEach {
+        useCase.getCyrillsToDatabase().onEach {
             if (it.isNotEmpty()) {
                 _stateStatus.emit(TranslateResource.Success(it))
                 _cyrillWords = it
@@ -95,14 +94,14 @@ class TranslateViewModelImpl @Inject constructor(
                     }
 
                     is Resource.Success -> {
-                        useCase.insertAllLatinsByDatabase(it.data)
+                        useCase.insertAllLatinsToDatabase(it.data)
                     }
                 }
             }.launchIn(viewModelScope)
         } else
             _stateStatus.emit(TranslateResource.Error(""))
 
-        useCase.getLatinsByDatabase().onEach {
+        useCase.getLatinsToDatabase().onEach {
             if (it.isNotEmpty()) {
                 _stateStatus.emit(TranslateResource.Success(it))
                 _latinWords = it
@@ -176,17 +175,10 @@ class TranslateViewModelImpl @Inject constructor(
                         HistoryEntity(cyrill = _stateResult.value, latin = _inputText)
                     else
                         HistoryEntity(cyrill = _inputText, latin = _stateResult.value)
-                useCase.insertFavouriteByDatabase(favourite)
+                useCase.insertHistoryToDatabase(favourite)
             }
         }
     }
-
-    override fun deleteFavourite(favouriteEntity: HistoryEntity) {
-        viewModelScope.launch {
-            useCase.deleteFavouriteByDatabase(favouriteEntity)
-        }
-    }
-
 }
 
 sealed class TranslateResource<out T> {

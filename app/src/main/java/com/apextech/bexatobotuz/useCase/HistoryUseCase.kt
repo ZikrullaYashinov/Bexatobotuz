@@ -4,6 +4,6 @@ import com.apextech.bexatobotuz.data.local.entity.HistoryEntity
 import kotlinx.coroutines.flow.Flow
 
 interface HistoryUseCase {
-    fun getFavouritesByDatabase(): Flow<List<HistoryEntity>>
+    fun getHistoriesByDatabase(): Flow<List<HistoryEntity>>
     suspend fun deleteAll(list: List<HistoryEntity>)
 }

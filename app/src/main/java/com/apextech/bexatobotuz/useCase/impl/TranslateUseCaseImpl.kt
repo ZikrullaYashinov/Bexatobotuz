@@ -24,37 +24,28 @@ class TranslateUseCaseImpl @Inject constructor(
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    override fun getCyrillsByDatabase(): Flow<List<WordResponse>> {
+    override fun getCyrillsToDatabase(): Flow<List<WordResponse>> {
         return repository.getCyrillsByDatabase().flatMapConcat { cyrillEntityList ->
             return@flatMapConcat flow<List<WordResponse>> { emit(cyrillEntityList.map { it.toWordResponse() }) }
         }
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    override fun getLatinsByDatabase(): Flow<List<WordResponse>> {
+    override fun getLatinsToDatabase(): Flow<List<WordResponse>> {
         return repository.getLatinsByDatabase().flatMapConcat { latinEntityList ->
             return@flatMapConcat flow<List<WordResponse>> { emit(latinEntityList.map { it.toWordResponse() }) }
         }
     }
 
-    override suspend fun insertAllCyrillsByDatabase(list: List<WordResponse>) {
+    override suspend fun insertAllCyrillsToDatabase(list: List<WordResponse>) {
         repository.insertAllCyrillsByDatabase(list.map { it.toCyrillEntity() })
     }
 
-    override suspend fun insertAllLatinsByDatabase(list: List<WordResponse>) {
+    override suspend fun insertAllLatinsToDatabase(list: List<WordResponse>) {
         repository.insertAllLatinsByDatabase(list.map { it.toLatinEntity() })
     }
 
-    override fun getFavouritesByDatabase(): Flow<List<HistoryEntity>> {
-        return repository.getHistoriesByDatabase()
+    override suspend fun insertHistoryToDatabase(historyEntity: HistoryEntity) {
+        repository.insertHistoryByDatabase(historyEntity)
     }
-
-    override suspend fun insertFavouriteByDatabase(favouriteEntity: HistoryEntity) {
-        repository.insertHistoryByDatabase(favouriteEntity)
-    }
-
-    override suspend fun deleteFavouriteByDatabase(favouriteEntity: HistoryEntity) {
-        repository.deleteHistoryByDatabase(favouriteEntity)
-    }
-
 }

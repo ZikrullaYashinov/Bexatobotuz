@@ -50,5 +50,4 @@ class HistoryAdapter : ListAdapter<HistoryEntity, HistoryAdapter.VhHistory>(MyDi
         }
         holder.bind(history)
     }
-
 }

@@ -55,16 +55,14 @@ class CyrillLatinRepositoryImpl @Inject constructor(
     }
 
     override fun getHistoriesByDatabase(): Flow<List<HistoryEntity>> {
-        return appDatabase.historyDao().getFavourite()
+        return appDatabase.historyDao().getHistory()
     }
 
-    override suspend fun insertHistoryByDatabase(favouriteEntity: HistoryEntity) {
-        appDatabase.historyDao().insert(favouriteEntity)
+    override suspend fun insertHistoryByDatabase(historyEntity: HistoryEntity) {
+        appDatabase.historyDao().insert(historyEntity)
     }
 
-    override suspend fun deleteHistoryByDatabase(favouriteEntity: HistoryEntity) {
-        appDatabase.historyDao().delete(favouriteEntity)
+    override suspend fun deleteHistoryByDatabase(historyEntity: HistoryEntity) {
+        appDatabase.historyDao().delete(historyEntity)
     }
-
-
 }
