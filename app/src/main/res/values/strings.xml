@@ -1,10 +1,10 @@
 <resources>
     <string name="app_name">Be xato</string>
     <string name="bexatobotuz">Bexatobotuz</string>
-    <string name="lotin">Lotin</string>
     <string name="be">Be</string>
     <string name="xato">xato</string>
-    <string name="krill">Krill</string>
+    <string name="lotin">Lotin</string>
+    <string name="krill">Kirill</string>
     <string name="internet_aloqasini_tekshiring">Internet aloqasini tekshiring</string>
     <string name="lotin_text">Lotin text</string>
     <string name="output_text">Output text</string>
