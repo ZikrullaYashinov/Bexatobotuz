@@ -1,10 +1,16 @@
 package com.apextech.bexatobotuz.ui.screen.translate
 
+import android.annotation.SuppressLint
+import android.content.Context.INPUT_METHOD_SERVICE
+import android.graphics.Color
 import android.os.Bundle
+import android.os.LocaleList
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
@@ -25,6 +31,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import java.util.Locale
 import kotlin.coroutines.CoroutineContext
 
 
@@ -60,14 +67,37 @@ class TranslateFragment : Fragment(), CoroutineScope {
     private fun load() {
     }
 
+    @SuppressLint("ResourceType")
     private fun observe() {
         viewModel.stateReplaceTranslator.onEach {
             val first = if (it) getString(R.string.lotin) else getString(R.string.krill)
             val second = if (it) getString(R.string.krill) else getString(R.string.lotin)
+            val firstColor = if (it) R.color.colorSecondaryDark else R.color.colorPrimary
+            val secondColor = if (it) R.color.colorPrimary else R.color.colorSecondaryDark
 
             binding.etInputText.setHint(first)
             binding.firstTranslator.text = first
             binding.secondTranslator.text = second
+            binding.firstTranslator.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    firstColor
+                )
+            )
+            binding.secondTranslator.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    secondColor
+                )
+            )
+
+            if (it)
+                binding.etInputText.imeHintLocales = LocaleList(Locale("en", "EN"))
+            else
+                binding.etInputText.imeHintLocales = LocaleList(Locale("ru", "RU"))
+            val imeManager: InputMethodManager =
+                requireContext().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+            imeManager.restartInput(binding.etInputText)
         }.launchIn(viewLifecycleOwner.lifecycleScope)
 
         viewModel.stateResult.onEach {
@@ -104,9 +134,8 @@ class TranslateFragment : Fragment(), CoroutineScope {
                 Assistant.copyText(requireActivity(), binding.tvOutputText.text.toString())
             }
             imgShare.setOnClickListener {
-                var text = binding.etInputText.text.toString().trim()
+                val text = binding.tvOutputText.text.toString().trim()
                 if (text.isEmpty()) return@setOnClickListener
-                text += "\n\n${binding.tvOutputText.text}"
                 Assistant.shareItem(requireContext(), text)
             }
             imgClear.setOnClickListener {

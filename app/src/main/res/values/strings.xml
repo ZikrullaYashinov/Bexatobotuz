@@ -4,10 +4,12 @@
     <string name="be">Be</string>
     <string name="xato">xato</string>
     <string name="lotin">Lotin</string>
-    <string name="krill">Kirill</string>
+    <string name="krill">Кирилл</string>
     <string name="internet_aloqasini_tekshiring">Internet aloqasini tekshiring</string>
     <string name="lotin_text">Lotin text</string>
     <string name="output_text">Output text</string>
     <string name="main">Asosiy</string>
     <string name="history">Tarix</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

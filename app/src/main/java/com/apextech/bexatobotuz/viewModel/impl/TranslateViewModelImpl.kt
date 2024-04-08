@@ -36,7 +36,7 @@ class TranslateViewModelImpl @Inject constructor(
     private val _stateResult = MutableStateFlow("")
     val stateResult = _stateResult.asStateFlow()
 
-    private val _stateReplaceTranslator = MutableStateFlow(true)
+    private val _stateReplaceTranslator = MutableStateFlow(false)
     val stateReplaceTranslator = _stateReplaceTranslator.asStateFlow()
 
     private var _cyrillWords = listOf<WordResponse>()
@@ -109,15 +109,50 @@ class TranslateViewModelImpl @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
+    //    override fun translate(text: String, isLatin: Boolean?) {
+//        val lng = isLatin ?: findTranslator(text)
+//        _stateReplaceTranslator.value = lng
+//        var translateText = text
+//        for (word in if (!lng) _cyrillWords else _latinWords) {
+//            translateText = if (lng)
+//                translateText.replace(word.letterLatin, word.letterCyrill)
+//            else
+//                translateText.replace(word.letterCyrill, word.letterLatin)
+//        }
+//        _stateResult.value = translateText
+//        changed = _inputText != text
+//        timer.cancel()
+//        if (!changed) return
+//        _inputText = text
+//        timer = Timer()
+//        timer.schedule(
+//            object : TimerTask() {
+//                override fun run() {
+//                    if (text.trim().isNotEmpty())
+//                        addFavourite()
+//                }
+//            },
+//            2000
+//        )
+//    }
     override fun translate(text: String, isLatin: Boolean?) {
         val lng = isLatin ?: findTranslator(text)
         _stateReplaceTranslator.value = lng
-        var translateText = text
-        for (word in if (!lng) _cyrillWords else _latinWords) {
-            translateText = if (lng)
-                translateText.replace(word.letterLatin, word.letterCyrill)
-            else
-                translateText.replace(word.letterCyrill, word.letterLatin)
+        var translateText = ""
+        if (lng) {
+            val stringList = text.split(" ")
+            stringList.forEach {
+                val enterSplit = it.split("\n")
+                for ((index, s) in enterSplit.withIndex()) {
+                    translateText += translateWord(s) + if (index != enterSplit.size - 1) "\n" else ""
+                }
+                translateText += " "
+            }
+        } else {
+            translateText = text
+            for (word in _cyrillWords) {
+                translateText = translateText.replace(word.letterCyrill, word.letterLatin)
+            }
         }
         _stateResult.value = translateText
         changed = _inputText != text
@@ -137,7 +172,6 @@ class TranslateViewModelImpl @Inject constructor(
     }
 
     override fun translateHistory(historyEntity: HistoryEntity) {
-        Log.d(TAG, "translateHistory: ")
         viewModelScope.launch {
             if (_stateReplaceTranslator.value) {
                 _stateInput.emit(historyEntity.latin)
@@ -162,7 +196,7 @@ class TranslateViewModelImpl @Inject constructor(
     override fun replaceTranslator() {
         _stateReplaceTranslator.value = !_stateReplaceTranslator.value
         _stateResult.value.let {
-            _stateInput.value = it
+            _stateInput.value = it.trim()
             translate(it, _stateReplaceTranslator.value)
         }
     }
@@ -178,6 +212,25 @@ class TranslateViewModelImpl @Inject constructor(
                 useCase.insertHistoryToDatabase(favourite)
             }
         }
+    }
+
+    override fun translateWord(word: String): String {
+        val regex = Regex("""(https?://\S+)|(\S+\.\S+)|(@\S+)""")
+        var link = ""
+        word.replace(regex) {
+            Log.d(TAG, "translateWord: ${it.value}")
+            link = word
+            ""
+        }
+        if (link.isNotEmpty())
+            return link
+
+        var translateText = word
+        for (w in _latinWords) {
+            translateText =
+                translateText.replace(w.letterLatin, w.letterCyrill)
+        }
+        return translateText
     }
 }
 

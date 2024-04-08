@@ -9,5 +9,6 @@ interface TranslateViewModel {
     fun translateHistory(historyEntity: HistoryEntity)
     fun replaceTranslator()
     fun addFavourite()
+    fun translateWord(word: String): String
 
 }
