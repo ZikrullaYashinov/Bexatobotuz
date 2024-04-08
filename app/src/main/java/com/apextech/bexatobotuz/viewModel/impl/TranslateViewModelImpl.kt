@@ -128,7 +128,7 @@ class TranslateViewModelImpl @Inject constructor(
         timer.schedule(
             object : TimerTask() {
                 override fun run() {
-                    if (text.isNotEmpty())
+                    if (text.trim().isNotEmpty())
                         addFavourite()
                 }
             },
