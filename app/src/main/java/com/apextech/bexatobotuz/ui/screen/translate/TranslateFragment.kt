@@ -106,7 +106,7 @@ class TranslateFragment : Fragment(), CoroutineScope {
             imgShare.setOnClickListener {
                 var text = binding.etInputText.text.toString().trim()
                 if (text.isEmpty()) return@setOnClickListener
-                text += "\n\n${binding.tvOutputText.text}\n\nPowered by Bexato"
+                text += "\n\n${binding.tvOutputText.text}"
                 Assistant.shareItem(requireContext(), text)
             }
             imgClear.setOnClickListener {
