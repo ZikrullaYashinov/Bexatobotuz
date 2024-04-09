@@ -2,10 +2,8 @@ package com.apextech.bexatobotuz.ui.screen.translate
 
 import android.annotation.SuppressLint
 import android.content.Context.INPUT_METHOD_SERVICE
-import android.graphics.Color
 import android.os.Bundle
 import android.os.LocaleList
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,12 +15,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.apextech.bexatobotuz.R
 import com.apextech.bexatobotuz.data.local.entity.HistoryEntity
 import com.apextech.bexatobotuz.databinding.FragmentTranslateBinding
 import com.apextech.bexatobotuz.utils.Assistant
 import com.apextech.bexatobotuz.utils.Constants
-import com.apextech.bexatobotuz.utils.Constants.TAG
 import com.apextech.bexatobotuz.viewModel.impl.TranslateResource
 import com.apextech.bexatobotuz.viewModel.impl.TranslateViewModelImpl
 import dagger.hilt.android.AndroidEntryPoint
@@ -152,6 +150,9 @@ class TranslateFragment : Fragment(), CoroutineScope {
                     viewModel.fetchLatins()
                     viewModel.fetchCyrills()
                 }
+            }
+            imgInfo.setOnClickListener {
+                findNavController().navigate(R.id.action_translateFragment_to_infoFragment)
             }
         }
     }

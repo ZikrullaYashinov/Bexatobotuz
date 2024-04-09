@@ -10,6 +10,12 @@
     <string name="output_text">Output text</string>
     <string name="main">Asosiy</string>
     <string name="history">Tarix</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="app_info">Ushbu bexato ilovasi orqali siz matnlarni kirillchadan lotinchaga va lotinchadan kirillchaga o\'g\'irishingiz mumkin</string>
+    <string name="info_telegram_bot">Telegram botimiz</string>
+    <string name="link_web_bexato">bexatobot.uz</string>
+    <string name="info_web_bexato">Web saytimiz</string>
+    <string name="link_telegram_bot">\@bexatobot</string>
+    <string name="url_telegram_bot">https://t.me/bexatobot</string>
+    <string name="url_web_bexato">https://bexatobot.uz</string>
 </resources>
