@@ -18,4 +18,10 @@
     <string name="link_telegram_bot">\@bexatobot</string>
     <string name="url_telegram_bot">https://t.me/bexatobot</string>
     <string name="url_web_bexato">https://bexatobot.uz</string>
+    <string name="k_low">қ</string>
+    <string name="k_up">Қ</string>
+    <string name="g_low">ғ</string>
+    <string name="g_up">Ғ</string>
+    <string name="o_low">ў</string>
+    <string name="o_up">Ў</string>
 </resources>

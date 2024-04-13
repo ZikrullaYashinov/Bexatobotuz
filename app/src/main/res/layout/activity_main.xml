@@ -24,15 +24,5 @@
             android:layout_weight="1"
             app:defaultNavHost="true"
             app:navGraph="@navigation/navigation" />
-
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottom_navigation_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:itemIconSize="30dp"
-            app:itemIconTint="@color/colorSecondaryDark"
-            app:itemTextColor="@color/colorPrimary"
-            app:labelVisibilityMode="labeled"
-            app:menu="@menu/bottom_nav_menu" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
