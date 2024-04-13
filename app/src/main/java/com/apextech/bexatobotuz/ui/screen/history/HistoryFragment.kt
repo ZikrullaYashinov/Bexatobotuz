@@ -10,6 +10,7 @@ import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.apextech.bexatobotuz.R
 import com.apextech.bexatobotuz.databinding.FragmentHistoryBinding
 import com.apextech.bexatobotuz.ui.adapter.HistoryAdapter
@@ -60,6 +61,11 @@ class HistoryFragment : Fragment() {
         adapter.itemClick = {
             setFragmentResult("data", bundleOf(Constants.ARG_HISTORY to it))
             Navigation.findNavController(binding.root).popBackStack()
+        }
+        binding.apply {
+            imgBack.setOnClickListener {
+                findNavController().popBackStack()
+            }
         }
     }
 }

@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.apextech.bexatobotuz.data.local.entity.HistoryEntity
+import com.apextech.bexatobotuz.data.model.Translator
 import com.apextech.bexatobotuz.data.remote.response.Resource
 import com.apextech.bexatobotuz.data.remote.response.WordResponse
 import com.apextech.bexatobotuz.useCase.TranslateUseCase
@@ -19,6 +20,7 @@ import kotlinx.coroutines.launch
 import java.util.Timer
 import java.util.TimerTask
 import javax.inject.Inject
+import kotlin.math.ln
 
 @HiltViewModel
 class TranslateViewModelImpl @Inject constructor(
@@ -38,6 +40,9 @@ class TranslateViewModelImpl @Inject constructor(
 
     private val _stateReplaceTranslator = MutableStateFlow(false)
     val stateReplaceTranslator = _stateReplaceTranslator.asStateFlow()
+
+    private val _stateKeyboardMore = MutableStateFlow(false)
+    val stateKeyboardMore = _stateKeyboardMore.asStateFlow()
 
     private var _cyrillWords = listOf<WordResponse>()
     private var _latinWords = listOf<WordResponse>()
@@ -109,35 +114,17 @@ class TranslateViewModelImpl @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    //    override fun translate(text: String, isLatin: Boolean?) {
-//        val lng = isLatin ?: findTranslator(text)
-//        _stateReplaceTranslator.value = lng
-//        var translateText = text
-//        for (word in if (!lng) _cyrillWords else _latinWords) {
-//            translateText = if (lng)
-//                translateText.replace(word.letterLatin, word.letterCyrill)
-//            else
-//                translateText.replace(word.letterCyrill, word.letterLatin)
-//        }
-//        _stateResult.value = translateText
-//        changed = _inputText != text
-//        timer.cancel()
-//        if (!changed) return
-//        _inputText = text
-//        timer = Timer()
-//        timer.schedule(
-//            object : TimerTask() {
-//                override fun run() {
-//                    if (text.trim().isNotEmpty())
-//                        addFavourite()
-//                }
-//            },
-//            2000
-//        )
-//    }
     override fun translate(text: String, isLatin: Boolean?) {
-        val lng = isLatin ?: findTranslator(text)
-        _stateReplaceTranslator.value = lng
+        var lng = isLatin
+        if (lng == null) {
+            val findTranslator = findTranslator(text)
+            if (findTranslator == Translator.LATIN) {
+                _stateReplaceTranslator.value = true
+            } else if (findTranslator == Translator.CYRILL) {
+                _stateReplaceTranslator.value = false
+            }
+            lng = _stateReplaceTranslator.value
+        }
         var translateText = ""
         if (lng) {
             val stringList = text.split(" ")
@@ -181,16 +168,24 @@ class TranslateViewModelImpl @Inject constructor(
         }
     }
 
-    private fun findTranslator(text: String): Boolean {
-        val size = text.length
-        var countChars = 0
-        val alphabetLower = "abcdefghijklmnopqrstuvwxyz"
-        val alphabetUpper = alphabetLower.uppercase()
+    private fun findTranslator(text: String): Translator {
+        var countCharsLatin = 0
+        var countCharsCyrill = 0
+        val alphabetLatinLower = "abcdefghijklmnopqrstuvwxyz"
+        val alphabetCyrillLower = "абвгдежзийклмнопрстуфхцчшщъьюяқғ"
+        val alphabetLatinUpper = alphabetLatinLower.uppercase()
+        val alphabetCyrillUpper = alphabetLatinLower.uppercase()
         text.map {
-            if (it in alphabetLower || it in alphabetUpper)
-                countChars++
+            if (it in alphabetLatinLower || it in alphabetLatinUpper)
+                countCharsLatin++
+            if (it in alphabetCyrillLower || it in alphabetCyrillUpper)
+                countCharsCyrill++
         }
-        return (size / 2) < countChars
+        if (countCharsCyrill < countCharsLatin)
+            return Translator.LATIN
+        if (countCharsLatin < countCharsCyrill)
+            return Translator.CYRILL
+        return Translator.NOT_TRANSLATOR
     }
 
     override fun replaceTranslator() {
@@ -199,6 +194,10 @@ class TranslateViewModelImpl @Inject constructor(
             _stateInput.value = it.trim()
             translate(it, _stateReplaceTranslator.value)
         }
+    }
+
+    override fun replaceKeyboardMore() {
+        _stateKeyboardMore.value = !_stateKeyboardMore.value
     }
 
     override fun addFavourite() {
@@ -218,7 +217,6 @@ class TranslateViewModelImpl @Inject constructor(
         val regex = Regex("""(https?://\S+)|(\S+\.\S+)|(@\S+)""")
         var link = ""
         word.replace(regex) {
-            Log.d(TAG, "translateWord: ${it.value}")
             link = word
             ""
         }

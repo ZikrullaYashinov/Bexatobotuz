@@ -8,6 +8,7 @@ interface TranslateViewModel {
     fun translate(text: String, isLatin: Boolean? = null)
     fun translateHistory(historyEntity: HistoryEntity)
     fun replaceTranslator()
+    fun replaceKeyboardMore()
     fun addFavourite()
     fun translateWord(word: String): String
 

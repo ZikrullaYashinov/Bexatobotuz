@@ -88,6 +88,9 @@ class TranslateFragment : Fragment(), CoroutineScope {
                     secondColor
                 )
             )
+            binding.apply {
+                keyboard.isVisible = !it
+            }
 
             if (it)
                 binding.etInputText.imeHintLocales = LocaleList(Locale("en", "EN"))
@@ -123,8 +126,19 @@ class TranslateFragment : Fragment(), CoroutineScope {
         viewModel.stateInput.onEach {
             binding.etInputText.setText(it)
         }.launchIn(viewLifecycleOwner.lifecycleScope)
+
+        viewModel.stateKeyboardMore.onEach {
+            binding.keyboardButtons.isVisible = it
+            if (it) {
+//                binding.cardKeyboardMore.rotation =
+                binding.keyboardMore.rotation = 180F
+            } else {
+                binding.keyboardMore.rotation = 0F
+            }
+        }.launchIn(viewLifecycleOwner.lifecycleScope)
     }
 
+    @SuppressLint("SetTextI18n")
     private fun click() {
         binding.apply {
             imgCopy.setOnClickListener {
@@ -141,6 +155,7 @@ class TranslateFragment : Fragment(), CoroutineScope {
             }
             imgReplaceTranslator.setOnClickListener {
                 viewModel.replaceTranslator()
+                etInputText.setSelection(etInputText.text?.length ?: 0)
             }
             etInputText.doOnTextChanged { text, _, _, _ ->
                 viewModel.translate(text.toString())
@@ -154,6 +169,44 @@ class TranslateFragment : Fragment(), CoroutineScope {
             imgInfo.setOnClickListener {
                 findNavController().navigate(R.id.action_translateFragment_to_infoFragment)
             }
+            imgBack.setOnClickListener {
+                findNavController().navigate(R.id.action_translateFragment_to_favouriteFragment)
+            }
+            cardKeyboardMore.setOnClickListener {
+                viewModel.replaceKeyboardMore()
+            }
+            cardKeyboardK.setOnClickListener {
+                setLetter(getString(R.string.k_low))
+            }
+            cardKeyboardKUp.setOnClickListener {
+                setLetter(getString(R.string.k_up))
+            }
+            cardKeyboardG.setOnClickListener {
+                setLetter(getString(R.string.g_low))
+            }
+            cardKeyboardGUp.setOnClickListener {
+                setLetter(getString(R.string.g_up))
+            }
+            cardKeyboardO.setOnClickListener {
+                setLetter(getString(R.string.o_low))
+            }
+            cardKeyboardOUp.setOnClickListener {
+                setLetter(getString(R.string.o_up))
+            }
+        }
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun setLetter(letter: String) {
+        binding.apply {
+            val selectionStart = etInputText.selectionStart
+            val selectionEnd = etInputText.selectionEnd
+            val text = etInputText.text.toString()
+            etInputText.setText(
+                "${text.substring(0, selectionStart)}$letter" +
+                        text.substring(selectionEnd, text.length)
+            )
+            etInputText.setSelection(selectionStart + 1)
         }
     }
 

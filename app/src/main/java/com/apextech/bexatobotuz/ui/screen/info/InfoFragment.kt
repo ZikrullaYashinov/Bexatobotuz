@@ -31,13 +31,7 @@ class InfoFragment : Fragment() {
         click()
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        requireActivity().findViewById<View>(R.id.bottom_navigation_view).isVisible = true
-    }
-
     private fun load() {
-        requireActivity().findViewById<View>(R.id.bottom_navigation_view).isVisible = false
     }
 
     private fun click() {
