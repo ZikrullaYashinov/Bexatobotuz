@@ -162,8 +162,10 @@ class TranslateViewModelImpl @Inject constructor(
         viewModelScope.launch {
             if (_stateReplaceTranslator.value) {
                 _stateInput.emit(historyEntity.latin)
+                _inputText = historyEntity.latin
             } else {
                 _stateInput.emit(historyEntity.cyrill)
+                _inputText = historyEntity.cyrill
             }
         }
     }

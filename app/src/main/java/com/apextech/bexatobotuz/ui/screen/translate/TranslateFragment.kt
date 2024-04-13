@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context.INPUT_METHOD_SERVICE
 import android.os.Bundle
 import android.os.LocaleList
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +22,7 @@ import com.apextech.bexatobotuz.data.local.entity.HistoryEntity
 import com.apextech.bexatobotuz.databinding.FragmentTranslateBinding
 import com.apextech.bexatobotuz.utils.Assistant
 import com.apextech.bexatobotuz.utils.Constants
+import com.apextech.bexatobotuz.utils.Constants.TAG
 import com.apextech.bexatobotuz.viewModel.impl.TranslateResource
 import com.apextech.bexatobotuz.viewModel.impl.TranslateViewModelImpl
 import dagger.hilt.android.AndroidEntryPoint
@@ -130,7 +132,6 @@ class TranslateFragment : Fragment(), CoroutineScope {
         viewModel.stateKeyboardMore.onEach {
             binding.keyboardButtons.isVisible = it
             if (it) {
-//                binding.cardKeyboardMore.rotation =
                 binding.keyboardMore.rotation = 180F
             } else {
                 binding.keyboardMore.rotation = 0F
@@ -151,6 +152,7 @@ class TranslateFragment : Fragment(), CoroutineScope {
                 Assistant.shareItem(requireContext(), text)
             }
             imgClear.setOnClickListener {
+                viewModel.addFavourite()
                 etInputText.setText("")
             }
             imgReplaceTranslator.setOnClickListener {
@@ -171,6 +173,12 @@ class TranslateFragment : Fragment(), CoroutineScope {
             }
             imgBack.setOnClickListener {
                 findNavController().navigate(R.id.action_translateFragment_to_favouriteFragment)
+            }
+            imgPaste.setOnClickListener {
+                val pasteText = Assistant.pasteText(requireActivity())
+                etInputText.setText(pasteText)
+                Log.d(TAG, "click: $pasteText")
+                etInputText.setSelection(etInputText.text?.length ?: 0)
             }
             cardKeyboardMore.setOnClickListener {
                 viewModel.replaceKeyboardMore()
