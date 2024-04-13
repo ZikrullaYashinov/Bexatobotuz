@@ -26,6 +26,19 @@
             </intent-filter>
         </activity>
 
+        <service
+            android:name=".ui.widget.MyKeyboard"
+            android:exported="true"
+            android:label="My Keyboard"
+            android:permission="android.permission.BIND_INPUT_METHOD">
+            <intent-filter>
+                <action android:name="android.view.InputMethod" />
+            </intent-filter>
+            <meta-data
+                android:name="android.view.im"
+                android:resource="@xml/input_method" />
+        </service>
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

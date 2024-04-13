@@ -1,9 +1,13 @@
 package com.apextech.bexatobotuz.ui.screen.translate
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Context.INPUT_METHOD_SERVICE
+import android.content.Intent
 import android.os.Bundle
 import android.os.LocaleList
+import android.provider.Settings
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +25,7 @@ import com.apextech.bexatobotuz.data.local.entity.HistoryEntity
 import com.apextech.bexatobotuz.databinding.FragmentTranslateBinding
 import com.apextech.bexatobotuz.utils.Assistant
 import com.apextech.bexatobotuz.utils.Constants
+import com.apextech.bexatobotuz.utils.Constants.TAG
 import com.apextech.bexatobotuz.viewModel.impl.TranslateResource
 import com.apextech.bexatobotuz.viewModel.impl.TranslateViewModelImpl
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,6 +36,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import java.util.Locale
 import kotlin.coroutines.CoroutineContext
+import kotlin.math.log
 
 
 @AndroidEntryPoint
@@ -38,6 +44,19 @@ class TranslateFragment : Fragment(), CoroutineScope {
 
     private lateinit var binding: FragmentTranslateBinding
     private val viewModel by viewModels<TranslateViewModelImpl>()
+
+    private fun isKeyboardEnabled(): Boolean {
+        val inputService =
+            requireContext().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        val enabledInputIds = inputService.enabledInputMethodList.map { it.id }
+        return enabledInputIds.contains("com.apextech.bexatobotuz.ui.widget/.MyKeyboard")
+    }
+
+    private fun openKeyboardChooserSettings() {
+        val inputService =
+            requireContext().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        inputService.showInputMethodPicker()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,22 +96,17 @@ class TranslateFragment : Fragment(), CoroutineScope {
             binding.firstTranslator.text = first
             binding.secondTranslator.text = second
             binding.firstTranslator.setTextColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    firstColor
-                )
+                ContextCompat.getColor(requireContext(), firstColor)
             )
             binding.secondTranslator.setTextColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    secondColor
-                )
+                ContextCompat.getColor(requireContext(), secondColor)
             )
 
             if (it)
                 binding.etInputText.imeHintLocales = LocaleList(Locale("en", "EN"))
-            else
-                binding.etInputText.imeHintLocales = LocaleList(Locale("ru", "RU"))
+            else {
+                binding.etInputText.imeHintLocales = LocaleList(Locale("uz", "UZ", "Cyrl"))
+            }
             val imeManager: InputMethodManager =
                 requireContext().getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
             imeManager.restartInput(binding.etInputText)
@@ -141,6 +155,7 @@ class TranslateFragment : Fragment(), CoroutineScope {
             }
             imgReplaceTranslator.setOnClickListener {
                 viewModel.replaceTranslator()
+                etInputText.setSelection(etInputText.text?.length ?: 0)
             }
             etInputText.doOnTextChanged { text, _, _, _ ->
                 viewModel.translate(text.toString())
@@ -152,9 +167,22 @@ class TranslateFragment : Fragment(), CoroutineScope {
                 }
             }
             imgInfo.setOnClickListener {
-                findNavController().navigate(R.id.action_translateFragment_to_infoFragment)
+//                findNavController().navigate(R.id.action_translateFragment_to_infoFragment)
+
+//                if (isKeyboardEnabled()) {
+                    openKeyboardChooserSettings()
+//                }
+            }
+            if (!isKeyboardEnabled()) {
+                openKeyboardSettings()
+
             }
         }
+    }
+
+    private fun openKeyboardSettings() {
+        val intent = Intent(Settings.ACTION_INPUT_METHOD_SETTINGS)
+        startActivity(intent)
     }
 
     private fun setError() {
