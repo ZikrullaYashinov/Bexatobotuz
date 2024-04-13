@@ -163,17 +163,18 @@
                     android:layout_marginBottom="16dp"
                     android:background="@drawable/background_card"
                     android:gravity="center"
-                    android:orientation="horizontal"
+                    android:orientation="vertical"
                     android:padding="16dp">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/et_input_text"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
+                        android:minHeight="120dp"
                         android:background="@drawable/background_text_view"
                         android:fontFamily="@font/roboto_medium"
                         android:hint="@string/lotin_text"
+                        android:gravity="start"
                         android:inputType="textMultiLine"
                         android:paddingHorizontal="8dp"
                         android:paddingVertical="8dp"
@@ -181,13 +182,29 @@
                         android:textColorHint="@color/gray2"
                         android:textSize="16sp" />
 
-                    <ImageView
-                        android:id="@+id/img_clear"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:foreground="?attr/selectableItemBackground"
-                        android:padding="8dp"
-                        android:src="@drawable/ic_close" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="end">
+
+                        <ImageView
+                            android:id="@+id/img_paste"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:foreground="?attr/selectableItemBackground"
+                            android:padding="8dp"
+                            android:src="@drawable/ic_paste"
+                            app:tint="@color/colorPrimary" />
+
+                        <ImageView
+                            android:id="@+id/img_clear"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:foreground="?attr/selectableItemBackground"
+                            android:padding="8dp"
+                            android:src="@drawable/ic_delete"
+                            app:tint="@color/colorPrimary" />
+                    </LinearLayout>
                 </LinearLayout>
 
                 <LinearLayout
@@ -206,6 +223,7 @@
                         android:background="@drawable/background_text_view"
                         android:fontFamily="@font/roboto_medium"
                         android:paddingHorizontal="8dp"
+                        android:minHeight="120dp"
                         android:paddingVertical="8dp"
                         android:text="@string/output_text"
                         android:textColor="@color/black"
@@ -376,8 +394,8 @@
             android:id="@+id/card_keyboard_more"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginEnd="16dp"
             android:layout_marginVertical="16dp"
+            android:layout_marginEnd="16dp"
             android:foreground="?attr/selectableItemBackground"
             app:cardCornerRadius="8dp"
             app:contentPadding="12dp">
