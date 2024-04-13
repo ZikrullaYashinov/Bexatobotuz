@@ -5,7 +5,6 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
-import android.view.inputmethod.InputMethodManager
 
 
 object Assistant {
@@ -17,6 +16,13 @@ object Assistant {
         manager.setPrimaryClip(ClipData.newPlainText("", text))
     }
 
+    fun pasteText(activity: Activity): String {
+        val clipboardManager =
+            activity.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        val clipData = clipboardManager.primaryClip
+        return clipData?.getItemAt(0)?.text.toString()
+    }
+
     fun shareItem(context: Context, text: String) {
         val intent = Intent().apply {
             action = Intent.ACTION_SEND
@@ -25,8 +31,4 @@ object Assistant {
         }
         context.startActivity(Intent.createChooser(intent, null))
     }
-
-
-
-
 }
